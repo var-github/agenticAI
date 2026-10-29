@@ -123,9 +123,9 @@ When a simulation plan is pending user approval, researchers can adjust multiple
 ### 3. Cross-Parameter Physical Constraints
 DeepLenseSim validates relational physical dependencies between parameters using Pydantic v2 model validators:
 * **Redshift Causality**: $z_{\text{lens}} < z_{\text{source}}$ strictly enforced; deflector galaxies must be closer to the observer than background sources.
-* **Geometrical Field-of-View Containment**: $\theta_E < \frac{\text{num\_pix} \times \text{pixel\_scale}}{2}$; ensures the Einstein ring fits comfortably within the camera sensor field of view.
-* **Mass Function Bounds**: Subhalo mass limits must satisfy $\text{min\_mass\_solar} < \text{max\_mass\_solar}$ ($10^7 - 10^9 M_\odot$).
-* **FFT Grid Parity**: $\text{num\_pix}$ must be an even integer (e.g. 64, 128, 150) for fast Fourier transform PSF convolutions.
+* **Geometrical Field-of-View Containment**: $\theta_E < \frac{\mathrm{FOV}}{2}$ (enforcing `theta_E < (num_pix * pixel_scale) / 2`); ensures the Einstein ring fits comfortably within the camera sensor field of view.
+* **Mass Function Bounds**: Subhalo mass limits must satisfy $M_{\min} < M_{\max}$ (enforcing `min_mass_solar < max_mass_solar` in $[10^7, 10^9]\,M_\odot$).
+* **FFT Grid Parity**: `num_pix` must be an even integer (e.g. 64, 128, 150) for fast Fourier transform PSF convolutions.
 * **Informative Physical Range Feedback**: When any parameter violates physical limits, `format_validation_error_with_ranges` catches the error and reports the exact allowed range, units, and astrophysical explanation.
 
 ### 4. Unrecognized Parameter Guard
@@ -183,6 +183,6 @@ For every simulation realization, the pipeline generates:
   1. Observed Mock Image (with optical blur & noise)
   2. Clean Ray-Traced Light
   3. Surface Mass Density (Convergence $\kappa$)
-  4. Substructure Residual Map ($\Delta I = I_{\text{sub}} - I_{\text{no\_sub}}$)
+  4. Substructure Residual Map ($\Delta I = I_{\text{sub}} - I_{\text{smooth}}$)
 * **`_metadata.json`**: Ground-truth JSON metadata capturing physical parameters, subhalo catalog, and observables.
 
