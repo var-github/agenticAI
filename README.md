@@ -138,7 +138,7 @@ If a prompt includes parameters not modeled in DeepLenseSim ray-tracing (e.g. `t
 ## Project Structure
 
 ```text
-AGAI/
+agenticAI/
 ├── deeplense_agent/
 │   ├── core/
 │   │   ├── physics.py          # lenstronomy ray-tracing, PSF convolution, observables
