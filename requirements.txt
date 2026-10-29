@@ -1,0 +1,10 @@
+streamlit>=1.35.0
+pydantic>=2.7.0
+pydantic-ai>=0.0.18
+lenstronomy>=1.14.0
+openai>=1.30.0
+astropy>=6.0.0
+scipy>=1.11.0
+numpy>=1.26.0
+matplotlib>=3.8.0
+pillow>=10.0.0
