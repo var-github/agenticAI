@@ -24,8 +24,7 @@ import numpy as np
 from dotenv import load_dotenv
 
 # Ensure project root is in sys.path
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-load_dotenv()
+os.environ["GROQ_API_KEY"] = st.secrets["GROQ_API_KEY"]
 
 from deeplense_agent.utils.schemas import (
     ModelConfiguration,
