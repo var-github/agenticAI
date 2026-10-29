@@ -41,6 +41,7 @@ An intelligent agentic workflow powered by **[Pydantic AI](https://ai.pydantic.d
 ---
 
 https://github.com/user-attachments/assets/3d457099-264f-4eec-a425-b6fc58bf8074
+Hosted at [https://deep-lense-agent.streamlit.app/](https://deep-lense-agent.streamlit.app/)
 
 ---
 
