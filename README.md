@@ -73,11 +73,12 @@ The agent models the three primary physical hypotheses studied in the DeepLense 
 
 A common failure mode in scientific automation is silently guessing missing parameters or running expensive numerical simulations on malformed inputs. Our agent enforces a **two-tier HITL protocol**:
 
-1. **Phase 1: Ambiguity Detection & Clarification**:
-   * If a user prompt lacks essential parameters (such as substructure type or model tier), the agent invokes `clarify_simulation_parameters` and presents structured, multiple-choice follow-up questions with recommended defaults.
+1. **Phase 1: Ambiguity Detection & Stateful Multi-Turn Clarification**:
+   * **Ambiguity Detection**: If a user prompt lacks essential simulation parameters (e.g. specifying `cdm` substructure without a telescope tier, or specifying `euclid` optics without a dark matter hypothesis), the agent triggers targeted clarification questions detailing available instruments (`Model_I` to `Model_IV`) and dark matter hypotheses (`cdm`, `axion`, `no_sub`).
+   * **Stateful Context Preservation**: The agent maintains conversational state across turns (`known_tier`, `known_sub`, `initial_prompt`). When the user replies with the missing piece (e.g. simply typing `euclid` or `cdm`), the state machine automatically merges the follow-up with prior specifications, applies any parameter modifications, and advances directly to the execution plan without redundant looping.
 2. **Phase 2: Execution Plan Review & Human Gate**:
    * The agent constructs a validated `SimulationRequest` and displays an `ExecutionPlanPreview` (showing deflector mass, source profile, instrument resolution, and estimated runtime).
-   * It awaits explicit user confirmation before launching numerical ray-tracing.
+   * It awaits explicit user confirmation (`✅ Approve & Ray-Trace` button or affirmative chat like `"yes"`, `"proceed"`, `"run"`) before launching numerical ray-tracing with `lenstronomy`.
 
 ---
 
@@ -156,9 +157,17 @@ AGAI/
 
 ---
 
+## DeepLenseSim AI Studio Web Dashboard
+
+The entire interactive application runs through Streamlit:
+
+```bash
+streamlit run app.py
+```
+
 The web dashboard provides:
-* ** Chat Agent**: Enter natural language simulation requests, modify physical parameters directly via chat, review the execution plan, and approve ray-tracing.
-* ** Manual Physics Playground**: Adjust deflector geometry, source light profiles, redshifts, and dark matter substructures with real-time Pydantic validation.
+* **🤖 Conversational Chat Agent**: Enter natural language simulation requests, modify physical parameters directly via chat, review the execution plan, and approve ray-tracing.
+* **🎛️ Manual Physics Playground**: Adjust deflector geometry, source light profiles, redshifts, and dark matter substructures with real-time Pydantic validation.
 * **📂 Simulation Gallery**: Inspect, visualize, and download generated FITS images, raw NPY arrays, publication-quality PNG previews, 4-panel diagnostic plots, and ground-truth JSON metadata.
 * **📖 Parameter Reference**: A sticky reference modal dialog displaying allowed physical ranges, units, and astrophysical descriptions for all 23 simulation parameters.
 
